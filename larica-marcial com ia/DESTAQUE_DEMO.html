@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preview - Campo de Destaque com Animação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0a0a1a;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(0, 150, 255, 0.1), transparent 30%),
+                radial-gradient(circle at 75% 75%, rgba(0, 255, 200, 0.1), transparent 30%),
+                linear-gradient(0deg, #0a0a1a, #0a0a1a);
+        }
+
+        @keyframes fadeInDestaque { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeOutDestaque { from { opacity: 1; } to { opacity: 0; } }
+        .destaque-fade-in { animation: fadeInDestaque 1s ease-in-out forwards; }
+        .destaque-fade-out { animation: fadeOutDestaque 1s ease-in-out forwards; }
+
+        .demo-container {
+            max-width: 500px;
+            margin: 40px auto;
+        }
+
+        .section-title {
+            color: #facc15;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-size: 12px;
+            color: #06b6d4;
+        }
+
+        .timeline-item {
+            text-align: center;
+            flex: 1;
+        }
+
+        .timeline-line {
+            height: 2px;
+            background: linear-gradient(90deg, #facc15 0%, #06b6d4 50%, transparent 100%);
+            margin-bottom: 10px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid #06b6d4;
+            color: #06b6d4;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: rgba(6, 182, 212, 0.4);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.5);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .info-box {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid #06b6d4;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            color: #06b6d4;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="section-title">🎯 Campo de Destaque - Demo Interativa</div>
+
+        <div class="info-box">
+            <strong>ℹ️ Como funciona:</strong><br>
+            • Clique em "Iniciar Animação" para ver o efeito<br>
+            • Cada mensagem dura 60 segundos (1s fade in + 58s fixo + 1s fade out)<br>
+            • Use os botões para controlar a demonstração
+        </div>
+
+        <div class="controls">
+            <button onclick="startAnimation()">▶ Iniciar</button>
+            <button onclick="pauseAnimation()">⏸ Pausar</button>
+            <button onclick="resetAnimation()">↺ Resetar</button>
+        </div>
+
+        <!-- Timeline visual -->
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-line"></div>
+                <span>0s<br>Fade In</span>
+            </div>
+            <div class="timeline-item">
+                <span>1s-59s<br>Fixo</span>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-line" style="background: linear-gradient(90deg, transparent 0%, #06b6d4 50%, #ef4444 100%);"></div>
+                <span>59s-60s<br>Fade Out</span>
+            </div>
+        </div>
+
+        <!-- Campo de Destaque (igual ao implementado) -->
+        <div style="background: rgba(17, 24, 39, 0.8); border: 1px solid rgba(0, 255, 255, 0.2); border-radius: 12px; padding: 20px; backdrop-filter: blur(12px);">
+            <h3 style="color: #06b6d4; font-size: 16px; margin-bottom: 15px; text-shadow: 0 0 8px rgba(6, 182, 212, 0.5);">Refeições de Hoje</h3>
+            
+            <!-- Refeições (mockup) -->
+            <div style="background: rgba(0, 0, 0, 0.3); padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid rgba(0, 255, 255, 0.1);">
+                <p style="color: #fff; font-size: 14px; margin-bottom: 8px;">📋 Refeições Registradas:</p>
+                <ul style="color: #06b6d4; font-size: 12px; padding-left: 20px;">
+                    <li>- Café da Manhã: Ovos mexidos com queijo</li>
+                    <li>- Almoço: Frango grelhado com batata doce</li>
+                </ul>
+            </div>
+
+            <!-- Piada -->
+            <div style="background: rgba(0, 0, 0, 0.3); padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid rgba(0, 255, 255, 0.1);">
+                <p style="color: #06b6d4; font-size: 12px; margin-bottom: 6px; opacity: 0.8;">😄 Piada do Dia:</p>
+                <p style="color: #06b6d4; font-size: 11px; font-style: italic; opacity: 0.9;">Por que o lutador de Jiu-Jitsu não come fast food? Porque ele prefere finalizar o prato!</p>
+            </div>
+
+            <!-- NOVO: Destaque com fade in/out -->
+            <div style="background: rgba(217, 119, 6, 0.15); padding: 12px; border-radius: 6px; border-left: 4px solid #facc15; border-top: 1px solid rgba(250, 204, 21, 0.2);">
+                <p style="color: #facc15; font-size: 11px; font-weight: 600; margin-bottom: 8px; text-shadow: 0 0 4px rgba(250, 204, 21, 0.4);">✨ Destaque do Momento</p>
+                <p id="destaqueText" style="color: #fef3c7; font-size: 14px; font-style: italic; margin: 0; line-height: 1.5; destaque-fade-in;">Mensagem aparecendo com fade...</p>
+            </div>
+
+            <!-- Info adicional -->
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(0, 255, 255, 0.1);">
+                <p style="color: #06b6d4; font-size: 11px; opacity: 0.7; margin: 0;">
+                    <strong>Status:</strong> <span id="status" style="color: #facc15;">Aguardando ação...</span>
+                </p>
+                <p style="color: #06b6d4; font-size: 11px; opacity: 0.7; margin: 6px 0 0 0;">
+                    <strong>Mensagem atual:</strong> <span id="messageIndex" style="color: #facc15;">-</span> de <span id="totalMessages">-</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Legenda -->
+        <div style="margin-top: 30px; padding: 15px; background: rgba(59, 130, 246, 0.1); border-left: 4px solid #3b82f6; border-radius: 6px;">
+            <p style="color: #93c5fd; font-size: 12px; margin: 0; line-height: 1.6;">
+                <strong>📌 Características:</strong><br>
+                ✓ Fade In: 1 segundo (opacidade 0 → 100%)<br>
+                ✓ Fixação: 58 segundos (100% opacidade)<br>
+                ✓ Fade Out: 1 segundo (100% → 0%)<br>
+                ✓ Transição suave com ease-in-out<br>
+                ✓ Rotação automática de mensagens
+            </p>
+        </div>
+    </div>
+
+    <script>
+        const messages = [
+            "O primeiro passo é o mais importante. A disciplina começa no prato.",
+            "Sincronize sua nutrição com seu treino. O poder vem da precisão.",
+            "A recuperação é tão crucial quanto o treino. Seus micronutrientes são seus aliados.",
+            "Você alcançou a maestria nutricional. Seu corpo é um reflexo da sua disciplina.",
+            "Por que o lutador de Jiu-Jitsu não come fast food? Porque ele prefere finalizar o prato.",
+            "Qual o cúmulo da fome para um judoka? É ter uma queda por doces.",
+            "O que o tomate foi fazer no tatame? Foi lutar no peso-pena.",
+            "Cada refeição é um tijolo na construção do seu templo. Continue firme."
+        ];
+
+        let currentIndex = 0;
+        let isPlaying = false;
+        let animationTimer = null;
+
+        function updateMessageInfo() {
+            document.getElementById('messageIndex').textContent = (currentIndex + 1);
+            document.getElementById('totalMessages').textContent = messages.length;
+        }
+
+        function showMessage(index) {
+            currentIndex = index % messages.length;
+            const el = document.getElementById('destaqueText');
+            el.textContent = messages[currentIndex];
+            el.classList.remove('destaque-fade-out');
+            el.classList.add('destaque-fade-in');
+            updateMessageInfo();
+        }
+
+        function fadeOutMessage() {
+            const el = document.getElementById('destaqueText');
+            el.classList.remove('destaque-fade-in');
+            el.classList.add('destaque-fade-out');
+        }
+
+        function startAnimation() {
+            if (isPlaying) return;
+            isPlaying = true;
+            document.getElementById('status').textContent = '▶ Animando...';
+            document.getElementById('status').style.color = '#10b981';
+            
+            showMessage(currentIndex);
+
+            // Inicia o ciclo
+            scheduleNext();
+        }
+
+        function scheduleNext() {
+            // Fade In + Fixação = 59s, depois Fade Out = 1s, total 60s
+            setTimeout(() => {
+                fadeOutMessage();
+                setTimeout(() => {
+                    if (isPlaying) {
+                        currentIndex = (currentIndex + 1) % messages.length;
+                        showMessage(currentIndex);
+                        scheduleNext();
+                    }
+                }, 1000); // Após 1s de fade out
+            }, 59000); // Após 59s (1s fade in + 58s fixo)
+        }
+
+        function pauseAnimation() {
+            isPlaying = false;
+            clearTimeout(animationTimer);
+            document.getElementById('status').textContent = '⏸ Pausado';
+            document.getElementById('status').style.color = '#f59e0b';
+        }
+
+        function resetAnimation() {
+            pauseAnimation();
+            currentIndex = 0;
+            const el = document.getElementById('destaqueText');
+            el.classList.remove('destaque-fade-in', 'destaque-fade-out');
+            el.textContent = 'Mensagem aparecendo com fade...';
+            document.getElementById('status').textContent = 'Aguardando ação...';
+            document.getElementById('status').style.color = '#facc15';
+            updateMessageInfo();
+        }
+
+        // Inicializa info
+        updateMessageInfo();
+    </script>
+</body>
+</html>

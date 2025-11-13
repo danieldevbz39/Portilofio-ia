@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Futurista</title>    
+    <style>
+        /* --- (SEU CSS ATUAL - SEM MUDANÇAS) --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: linear-gradient(135deg, #0f0f1e 0%, #1a0033 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; display: flex; overflow-x: hidden; flex-direction: column; }
+        .container { text-align: center; padding: 20px; width: 100%; flex: 1; }
+        h1 { color: #00d4ff; font-size: clamp(2rem, 8vw, 3.5rem); margin-bottom: 10px; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5); letter-spacing: 2px; }
+        .subtitle { color: #b0b0ff; font-size: clamp(1rem, 4vw, 1.2rem); margin-bottom: 40px; font-weight: 300; }
+        .portfolio-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 900px; margin: 0 auto; padding: 0 10px; }
+        .card { background: rgba(255, 255, 255, 0.05); border: 2px solid #00d4ff; border-radius: 15px; padding: 30px 20px; transition: all 0.3s ease; backdrop-filter: blur(10px); cursor: pointer; position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent); animation: shimmer 3s infinite; }
+        @keyframes shimmer { 0% { transform: translate(-100%, -100%) rotate(45deg); } 100% { transform: translate(100%, 100%) rotate(45deg); } }
+        .card:hover { transform: translateY(-8px); border-color: #ff006e; box-shadow: 0 0 30px rgba(0, 212, 255, 0.4); }
+        .card-content { position: relative; z-index: 1; }
+        .card h2 { color: #00d4ff; font-size: clamp(1.3rem, 5vw, 1.8rem); margin-bottom: 15px; }
+        .card p { color: #b0b0ff; font-size: clamp(0.9rem, 3vw, 1rem); margin-bottom: 20px; line-height: 1.6; }
+        .btn { display: inline-block; padding: 10px 25px; background: linear-gradient(135deg, #00d4ff, #0099cc); color: #0f0f1e; text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer; font-size: clamp(0.9rem, 2vw, 1rem); }
+        .btn:hover { background: linear-gradient(135deg, #ff006e, #ff4587); box-shadow: 0 0 20px rgba(255, 0, 110, 0.5); transform: scale(1.05); }
+        @media (min-width: 768px) { .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 25px; padding: 0 20px; } .container { padding: 30px; } .card { padding: 35px 25px; } }
+        @media (min-width: 1024px) { .portfolio-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; } .container { padding: 40px; } .card { padding: 40px; } }
+        footer { color: white; padding: 30px 10px; text-align: center; width: 100%; }
+        .ref { color: rgba(255, 255, 255, 0.349); animation: scrollText 50s linear infinite; white-space: nowrap; overflow: hidden; margin: 10px; }
+        @keyframes scrollText { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* --------------------------------- */
+        /* --- CSS DO POPUP (ATUALIZADO) --- */
+        /* --------------------------------- */
+        
+        #feedback-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; backdrop-filter: blur(5px); }
+        #feedback-popup { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 90%; max-width: 500px; background: linear-gradient(145deg, #2c2a22, #1a1913); color: #FFF; border: 2px solid #FFD700; box-shadow: 0 0 30px rgba(255, 215, 0, 0.5); border-radius: 15px; padding: 30px; z-index: 1001; text-align: left; }
+        .popup-hidden, .overlay-hidden { display: none; }
+        .popup-visible, .overlay-visible { display: block; }
+        #feedback-popup.popup-visible { display: block; }
+        
+        #feedback-popup h2 { color: #FFD700; text-align: center; margin-bottom: 15px; font-size: 1.5rem; }
+        /* (NOVO) Estilo para o nome do projeto no título */
+        #popup-project-name { color: #FFF; text-transform: capitalize; } 
+        
+        #feedback-popup p { text-align: center; color: #f0e68c; margin-bottom: 25px; }
+        #feedback-popup form label { display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 15px; font-size: 1.1rem; color: #FFF; cursor: pointer; transition: color 0.3s ease; }
+        #feedback-popup form label:hover { color: #FFD700; }
+        #feedback-popup input[type="checkbox"] { margin-right: 12px; accent-color: #FFD700; }
+        
+        .vote-stats { display: flex; align-items: center; width: 100%; margin-top: 8px; padding-left: 28px; }
+        .vote-bar-container { flex: 1; height: 10px; background: rgba(255, 255, 255, 0.1); border-radius: 5px; margin-right: 10px; overflow: hidden; }
+        .vote-bar { height: 100%; width: 0%; background: #FFD700; border-radius: 5px; transition: width 0.5s ease-out; }
+        .vote-count { font-size: 0.9rem; font-weight: bold; color: #FFD700; min-width: 20px; text-align: right; }
+        .close-btn { position: absolute; top: 10px; right: 15px; font-size: 2rem; color: #FFD700; background: none; border: none; cursor: pointer; line-height: 1; transition: color 0.3s ease; }
+        .close-btn:hover { color: #FFF; }
+
+        /* ------------------------------------------- */
+        /* --- CSS DOS RESULTADOS NO CARD (NOVO) --- */
+        /* ------------------------------------------- */
+        .project-results {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 212, 255, 0.3); /* Azul do seu tema */
+            text-align: left;
+            color: #b0b0ff; /* Cor do parágrafo */
+        }
+        .project-results h3 {
+            color: #00d4ff; /* Azul do seu tema */
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .result-item {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .result-item .vote-data {
+            font-weight: bold;
+            color: #FFF;
+            min-width: 20px;
+            text-align: right;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PORTFÓLIO</h1>
+        <p class="subtitle">Explore meus projetos futuristas</p>
+        
+        <div class="portfolio-grid">
+            <div class="card" data-project-card="projeto1">
+                <div class="card-content">
+                    <h2>Projeto 1</h2>
+                    <p>Descrição do seu primeiro site ou projeto.</p>
+                    <a href="larica-marcial com ia/larica/index.html" class="btn" rel="noopener" data-project="projeto1">Acessar</a>
+                
+                    <div class="project-results">
+                        <h3>Votos Locais:</h3>
+                        <div class="result-item">🎨 Design: <span class="vote-data" data-vote-type="design">0</span></div>
+                        <div class="result-item">📱 Adaptação: <span class="vote-data" data-vote-type="responsivo">0</span></div>
+                        <div class="result-item">🖱️ Uso: <span class="vote-data" data-vote-type="uso">0</span></div>
+                        <div class="result-item">💡 Func.: <span class="vote-data" data-vote-type="funcionalidade">0</span></div>
+                        <div class="result-item">🌟 Uau: <span class="vote-data" data-vote-type="uau">0</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" data-project-card="projeto2">
+                <div class="card-content">
+                    <h2>Projeto 2</h2>
+                    <p>Descrição do seu segundo site ou projeto.</p>
+                    <a href="Larica_Marcial/index.html" class="btn" data-project="projeto2">Acessar</a>
+
+                    <div class="project-results">
+                        <h3>Votos Locais:</h3>
+                        <div class="result-item">🎨 Design: <span class="vote-data" data-vote-type="design">0</span></div>
+                        <div class="result-item">📱 Adaptação: <span class="vote-data" data-vote-type="responsivo">0</span></div>
+                        <div class="result-item">🖱️ Uso: <span class="vote-data" data-vote-type="uso">0</span></div>
+                        <div class="result-item">💡 Func.: <span class="vote-data" data-vote-type="funcionalidade">0</span></div>
+                        <div class="result-item">🌟 Uau: <span class="vote-data" data-vote-type="uau">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bg-audio" src="audio/Paul Damixie - Drip (Official Music Video) (128kbit_AAC).m4a" preload="auto" playsinline></audio>
+    <script>
+    (function(){
+        var audio = document.getElementById('bg-audio');
+        if (!audio) return;
+        audio.volume = 0.9;
+        function tryPlay(restart) {
+            if (restart) { try { audio.currentTime = 0; } catch (e) { /* ... */ } }
+            var playPromise = audio.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(function (err) { console.warn('Autoplay prevented:', err); });
+            }
+        }
+        document.addEventListener('DOMContentLoaded', function () { tryPlay(false); });
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'visible') { tryPlay(true); } else { try { audio.pause(); } catch (e) {} }
+        });
+        window.addEventListener('focus', function () { tryPlay(true); });
+        window.addEventListener('pageshow', function (e) { if (e.persisted) tryPlay(true); });
+    })();
+    </script>
+
+    <footer> 
+        <p> &copy; 2025 Daniel dos Santos Siqueira. Todos os direitos reservados.</p>
+        <p class="ref">Romanos 11:36: "Porque dele, e por ele, e para ele são todas as coisas; glória, pois, a ele eternamente. Amém."</p>
+    </footer>
+
+
+    <div id="feedback-overlay" class="overlay-hidden"></div>
+    <div id="feedback-popup" class="popup-hidden">
+        <button id="close-popup" class="close-btn">&times;</button>
+        <h2>O que você achou do <span id="popup-project-name">Projeto</span>?</h2>
+        <p>Marque o que mais gostou (seus votos serão salvos):</p>
+        
+        <form id="feedback-form">
+            <label>
+                <input type="checkbox" name="feedback" value="design">
+                🎨 Design e Impacto Visual
+                <div class="vote-stats">
+                    <div class="vote-bar-container"><div class="vote-bar" id="bar-design"></div></div>
+                    <span class="vote-count" id="count-design">0</span>
+                </div>
+            </label>
+            <label>
+                <input type="checkbox" name="feedback" value="responsivo">
+                📱 Adaptação (Responsividade)
+                <div class="vote-stats">
+                    <div class="vote-bar-container"><div class="vote-bar" id="bar-responsivo"></div></div>
+                    <span class="vote-count" id="count-responsivo">0</span>
+                </div>
+            </label>
+            <label>
+                <input type="checkbox" name="feedback" value="uso">
+                🖱️ Facilidade de Uso (Navegação)
+                <div class="vote-stats">
+                    <div class="vote-bar-container"><div class="vote-bar" id="bar-uso"></div></div>
+                    <span class="vote-count" id="count-uso">0</span>
+                </div>
+            </label>
+            <label>
+                <input type="checkbox" name="feedback" value="funcionalidade">
+                💡 Propósito e Funcionalidade
+                <div class="vote-stats">
+                    <div class="vote-bar-container"><div class="vote-bar" id="bar-funcionalidade"></div></div>
+                    <span class="vote-count" id="count-funcionalidade">0</span>
+                </div>
+            </label>
+            <label>
+                <input type="checkbox" name="feedback" value="uau">
+                🌟 Fator Uau
+                <div class="vote-stats">
+                    <div class="vote-bar-container"><div class="vote-bar" id="bar-uau"></div></div>
+                    <span class="vote-count" id="count-uau">0</span>
+                </div>
+            </label>
+        </form>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- 1. Referências aos Elementos ---
+        const projectLinks = document.querySelectorAll('.card .btn');
+        const popup = document.getElementById('feedback-popup');
+        const overlay = document.getElementById('feedback-overlay');
+        const closeBtn = document.getElementById('close-popup');
+        const feedbackForm = document.getElementById('feedback-form');
+        const popupProjectName = document.getElementById('popup-project-name');
+
+        // --- 2. Chaves de Armazenamento ---
+        const projectVisitKey = 'vistoProjetoPortfolio';
+        const projectVotesKey = 'portfolioProjectVotes'; 
+        
+        let currentProjectVoting = null; 
+
+        // --- 3. Estrutura de Votos Padrão ---
+        const defaultAllVotes = {
+            projeto1: { design: 0, responsivo: 0, uso: 0, funcionalidade: 0, uau: 0 },
+            projeto2: { design: 0, responsivo: 0, uso: 0, funcionalidade: 0, uau: 0 }
+        };
+
+        // --- 4. (NOVO) Helper para Carregar e Mesclar Votos ---
+        /**
+         * Carrega os votos salvos e mescla com a estrutura padrão.
+         * Isso garante que allVotes.projeto1 e allVotes.projeto2 sempre existam.
+         */
+        function getMergedVotes() {
+            let savedVotes = JSON.parse(localStorage.getItem(projectVotesKey)) || {};
+            
+            // Mescla os padrões com os votos salvos para cada projeto
+            return {
+                projeto1: { ...defaultAllVotes.projeto1, ...(savedVotes.projeto1 || {}) },
+                projeto2: { ...defaultAllVotes.projeto2, ...(savedVotes.projeto2 || {}) }
+            };
+        }
+
+        // --- 5. Funções de Votação (ATUALIZADAS) ---
+
+        // (MODIFICADO) Atualiza os totais visíveis na página principal
+        function updateMainPageResults() {
+            // (ATUALIZADO) Usa a função helper para garantir que os dados existam
+            let allVotes = getMergedVotes(); 
+            
+            for (const projectKey in allVotes) { // 'projeto1', 'projeto2'
+                const projectCard = document.querySelector(`[data-project-card="${projectKey}"]`);
+                if (projectCard) {
+                    const projectVotes = allVotes[projectKey];
+                    for (const voteType in projectVotes) { // 'design', 'responsivo', ...
+                        const span = projectCard.querySelector(`.vote-data[data-vote-type="${voteType}"]`);
+                        if (span) {
+                            span.innerText = projectVotes[voteType];
+                        }
+                    }
+                }
+            }
+        }
+
+        // (MODIFICADO) Atualiza os gráficos DENTRO do popup
+        function updatePopupGraphs(projectKey) {
+            // (ATUALIZADO) Usa a função helper
+            let allVotes = getMergedVotes();
+            
+            // Agora é seguro acessar allVotes[projectKey] sem um fallback
+            let votes = allVotes[projectKey]; 
+            
+            let totalVotes = Object.values(votes).reduce((acc, count) => acc + count, 0);
+
+            for (const key in votes) {
+                const count = votes[key];
+                const percent = (totalVotes > 0) ? (count / totalVotes) * 100 : 0;
+                
+                const countEl = document.getElementById(`count-${key}`);
+                const barEl = document.getElementById(`bar-${key}`);
+                
+                if (countEl) countEl.innerText = count;
+                if (barEl) barEl.style.width = percent + '%';
+            }
+        }
+
+        // (MODIFICADO) Salva os votos para o projeto ATUAL
+        function saveAndClose() {
+            if (!currentProjectVoting) {
+                hidePopup();
+                return;
+            }
+
+            // (ATUALIZADO) Usa a função helper para carregar os dados
+            let allVotes = getMergedVotes();
+            
+            // Agora é seguro acessar allVotes[currentProjectVoting]
+            let projectVotes = allVotes[currentProjectVoting]; 
+
+            const checkedInputs = feedbackForm.querySelectorAll('input[type="checkbox"]:checked');
+            
+            checkedInputs.forEach(input => {
+                const key = input.value;
+                if (projectVotes.hasOwnProperty(key)) {
+                    projectVotes[key]++; // Incrementa o voto só desse projeto
+                }
+                input.checked = false; // Desmarca
+            });
+            
+            allVotes[currentProjectVoting] = projectVotes; 
+            
+            localStorage.setItem(projectVotesKey, JSON.stringify(allVotes));
+            
+            hidePopup();
+            
+            updateMainPageResults();
+        }
+
+        // --- 6. Funções de Visibilidade (Sem Alterações) ---
+        
+        function showPopup(projectKey) {
+            currentProjectVoting = projectKey; 
+            
+            // Atualiza o título do popup
+            const projectName = (projectKey === 'projeto1') ? 'Projeto 1' : 'Projeto 2';
+            popupProjectName.innerText = projectName;
+            
+            updatePopupGraphs(projectKey); 
+            
+            overlay.classList.remove('overlay-hidden');
+            overlay.classList.add('overlay-visible');
+            popup.classList.remove('popup-hidden');
+            popup.classList.add('popup-visible');
+        }
+
+        function hidePopup() {
+            overlay.classList.add('overlay-hidden');
+            overlay.classList.remove('overlay-visible');
+            popup.classList.add('popup-hidden');
+            popup.classList.remove('popup-visible');
+            currentProjectVoting = null; 
+            
+            // (Opcional) Limpa os checkboxes caso o usuário feche sem votar
+             feedbackForm.querySelectorAll('input[type="checkbox"]').forEach(input => {
+                input.checked = false;
+             });
+        }
+
+        // --- 7. Event Listeners (Sem Alterações) ---
+        
+        projectLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                const projectKey = link.getAttribute('data-project');
+                sessionStorage.setItem(projectVisitKey, projectKey); 
+            });
+        });
+        
+        // --- Lógica de Carregamento (Sem Alterações) ---
+        
+        updateMainPageResults(); 
+        
+        const projectJustSeen = sessionStorage.getItem(projectVisitKey);
+        
+        if (projectJustSeen) { 
+            showPopup(projectJustSeen); 
+            sessionStorage.removeItem(projectVisitKey);
+        }
+
+        closeBtn.addEventListener('click', saveAndClose);
+        overlay.addEventListener('click', saveAndClose);
+
+    });
+    </script>
+</body>
+</html>

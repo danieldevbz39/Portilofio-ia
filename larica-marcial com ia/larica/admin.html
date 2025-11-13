@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Painel Admin - Larica Marcial</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+      body { background:#071029; color:#e6f7ff; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial; }
+      .card { background: rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.04); padding:1rem; border-radius:8px; }
+      .muted { color: rgba(230,247,255,0.6); }
+      input[type="password"] { padding:.5rem; border-radius:6px; border:1px solid rgba(255,255,255,0.08); background:transparent; color:inherit }
+      table { width:100%; border-collapse:collapse }
+      th,td { padding:.5rem; border-bottom:1px solid rgba(255,255,255,0.03); text-align:left }
+      .btn { background:#06b6d4; color:#042023; padding:.4rem .6rem; border-radius:6px; cursor:pointer; }
+      .btn-ghost { background:transparent; border:1px solid rgba(255,255,255,0.06); color:inherit; }
+    </style>
+  </head>
+  <body class="min-h-screen p-8">
+    <div class="max-w-5xl mx-auto">
+      <header class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold">Painel Administrativo</h1>
+        <div>
+          <button id="logoutBtn" class="btn-ghost" style="display:none" onclick="logoutAdmin()">Sair</button>
+        </div>
+      </header>
+
+      <div id="loginCard" class="card mb-6">
+        <h2 class="text-lg font-semibold">Entrar (PIN de 3 dígitos)</h2>
+        <p class="muted">Insira o PIN administrativo de 3 dígitos.</p>
+        <div class="mt-3 flex items-center gap-2">
+          <input id="adminPin" type="password" maxlength="3" placeholder="123" />
+          <button class="btn" onclick="attemptLogin()">Entrar</button>
+        </div>
+        <p class="text-xs muted mt-2">O PIN padrão é <strong>123</strong> (pode ser alterado via console/localStorage).</p>
+      </div>
+
+      <div id="adminDashboard" style="display:none">
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <div class="card">
+            <h3 class="font-semibold">Visualizações do site</h3>
+            <div id="viewsCount" class="text-3xl font-bold mt-2">0</div>
+            <div class="muted text-xs">Total de carregamentos registrados</div>
+          </div>
+
+          <div class="card">
+            <h3 class="font-semibold">Taxa de Satisfação</h3>
+            <div id="satisfactionSummary" class="text-2xl font-bold mt-2">—</div>
+            <div id="satisfactionDetails" class="muted text-xs">—</div>
+          </div>
+
+          <div class="card">
+            <h3 class="font-semibold">Cadastros efetivos</h3>
+            <div id="usersCount" class="text-2xl font-bold mt-2">0</div>
+            <div class="muted text-xs">Usuários registrados no localStorage</div>
+          </div>
+        </section>
+
+        <section class="mb-6 card">
+          <h3 class="font-semibold mb-2">Pagamentos</h3>
+          <div class="muted text-xs mb-3">Liste e marque pagamentos como concluídos.</div>
+          <table>
+            <thead><tr><th>ID</th><th>Usuário</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead>
+            <tbody id="paymentsTable">
+            </tbody>
+          </table>
+        </section>
+
+        <section class="card mb-6">
+          <h3 class="font-semibold mb-2">Lista de Usuários</h3>
+          <table>
+            <thead><tr><th>Email</th><th>Nome</th><th>Registrado</th></tr></thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </section>
+
+        <section class="card">
+          <h3 class="font-semibold mb-2">Ações Rápidas</h3>
+          <div class="flex gap-2">
+            <button class="btn" onclick="exportData()">Exportar dados (console)</button>
+            <button class="btn-ghost" onclick="clearTestPayments()">Limpar pagamentos de teste</button>
+          </div>
+        </section>
+      </div>
+
+    </div>
+
+    <script>
+      // Inicializa PIN padrão se não existir (localStorage)
+      (function(){
+        try {
+          if (!localStorage.getItem('admin_pin')) localStorage.setItem('admin_pin','123');
+        } catch(e) { console.warn('Não foi possível inicializar admin_pin', e); }
+      })();
+
+      function showMessage(msg) { alert(msg); }
+
+      function attemptLogin() {
+        const pin = (document.getElementById('adminPin').value || '').trim();
+        if (!/^[0-9]{3}$/.test(pin)) { showMessage('Digite um PIN de 3 dígitos'); return; }
+        try {
+          const stored = localStorage.getItem('admin_pin') || '123';
+          if (pin === stored) { onAdminAuthenticated(); } else { showMessage('PIN incorreto'); }
+        } catch(e) { console.error(e); showMessage('Erro ao autenticar'); }
+      }
+
+      function onAdminAuthenticated() {
+        document.getElementById('loginCard').style.display = 'none';
+        document.getElementById('adminDashboard').style.display = 'block';
+        document.getElementById('logoutBtn').style.display = 'inline-block';
+        renderAdminStats();
+      }
+
+      function logoutAdmin(){ document.getElementById('loginCard').style.display='block'; document.getElementById('adminDashboard').style.display='none'; document.getElementById('logoutBtn').style.display='none'; }
+
+      function renderAdminStats() {
+        // Visualizações
+        const views = parseInt(localStorage.getItem('site_views') || '0', 10) || 0;
+        document.getElementById('viewsCount').textContent = String(views);
+
+        // Satisfação
+        const sat = JSON.parse(localStorage.getItem('satisfaction') || '[]');
+        const users = JSON.parse(localStorage.getItem('larica_users') || '[]');
+        const usersCount = Array.isArray(users) ? users.length : 0;
+        document.getElementById('usersCount').textContent = String(usersCount);
+
+        const satArr = Array.isArray(sat) ? sat : [];
+        if (satArr.length === 0) {
+          document.getElementById('satisfactionSummary').textContent = 'Sem avaliações';
+          document.getElementById('satisfactionDetails').textContent = 'Nenhuma avaliação registrada.';
+        } else {
+          const avg = (satArr.reduce((a,b)=>a+b,0)/satArr.length);
+          const percentSatisfied = ((satArr.filter(x=>x>=4).length / satArr.length) * 100).toFixed(1);
+          document.getElementById('satisfactionSummary').textContent = avg.toFixed(2) + ' / 5';
+          document.getElementById('satisfactionDetails').textContent = `${satArr.length} avaliações • ${percentSatisfied}% >=4`;
+        }
+
+        // Pagamentos
+        const payments = JSON.parse(localStorage.getItem('payments') || '[]');
+        const tbody = document.getElementById('paymentsTable'); tbody.innerHTML = '';
+        if (!Array.isArray(payments) || payments.length === 0) {
+          const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="5" class="muted">Nenhum pagamento registrado.</td>'; tbody.appendChild(tr);
+        } else {
+          payments.forEach(p => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${p.id||''}</td><td>${p.userEmail||p.user||'—'}</td><td>${p.amount!=null? 'R$ '+p.amount.toFixed(2): '—'}</td><td>${p.status||'—'}</td><td></td>`;
+            const actionsTd = tr.querySelector('td:last-child');
+            const btnComplete = document.createElement('button'); btnComplete.textContent='Marcar como Concluído'; btnComplete.className='btn';
+            btnComplete.onclick = () => { p.status='completed'; savePayments(payments); renderAdminStats(); };
+            const btnDelete = document.createElement('button'); btnDelete.textContent='Remover'; btnDelete.className='btn-ghost'; btnDelete.style.marginLeft='8px';
+            btnDelete.onclick = () => { if(confirm('Remover pagamento?')){ const idx = payments.findIndex(x=>x.id===p.id); if(idx>=0){ payments.splice(idx,1); savePayments(payments); renderAdminStats(); } } };
+            actionsTd.appendChild(btnComplete); actionsTd.appendChild(btnDelete);
+            tbody.appendChild(tr);
+          });
+        }
+
+        // Lista de usuários
+        const usersTbody = document.getElementById('usersTable'); usersTbody.innerHTML = '';
+        if (!Array.isArray(users) || users.length===0) {
+          const tr = document.createElement('tr'); tr.innerHTML = '<td colspan="3" class="muted">Nenhum cadastro encontrado.</td>'; usersTbody.appendChild(tr);
+        } else {
+          users.forEach(u => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td>${u.email||''}</td><td>${u.name||''}</td><td>${u.registeredAt||'—'}</td>`;
+            usersTbody.appendChild(tr);
+          });
+        }
+      }
+
+      function savePayments(arr){ try{ localStorage.setItem('payments', JSON.stringify(arr)); }catch(e){console.error(e);} }
+
+      function exportData(){ console.log('USERS', JSON.parse(localStorage.getItem('larica_users')||'[]')); console.log('PAYMENTS', JSON.parse(localStorage.getItem('payments')||'[]')); console.log('VIEWS', localStorage.getItem('site_views')||0); console.log('SAT', JSON.parse(localStorage.getItem('satisfaction')||'[]')); alert('Dados exportados para console'); }
+
+      function clearTestPayments(){ if(confirm('Limpar todos os pagamentos?')){ localStorage.removeItem('payments'); renderAdminStats(); } }
+
+      // Auto-login in dev if URL contains ?admin=1 (convenience)
+      if (location.search.indexOf('admin=1')!==-1) { document.addEventListener('DOMContentLoaded', ()=>{ document.getElementById('adminPin').value=localStorage.getItem('admin_pin')||'123'; attemptLogin(); }); }
+    </script>
+  </body>
+</html>

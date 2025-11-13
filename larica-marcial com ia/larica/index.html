@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Larica Marcial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #0a0a1a;
+        background-image: 
+          radial-gradient(circle at 25% 25%, rgba(0, 150, 255, 0.1), transparent 30%),
+          radial-gradient(circle at 75% 75%, rgba(0, 255, 200, 0.1), transparent 30%),
+          linear-gradient(0deg, #0a0a1a, #0a0a1a),
+          url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"%3E%3Cg fill-rule="evenodd"%3E%3Cg fill="%231a2035" fill-opacity="0.2"%3E%3Cpath d="M0 38.59l2.83-2.83 1.41 1.41L1.41 40H0v-1.41zM0 1.4l2.83 2.83 1.41-1.41L1.41 0H0v1.41zM38.59 40l-2.83-2.83 1.41-1.41L40 38.59V40h-1.41zM40 1.41l-2.83 2.83-1.41-1.41L38.59 0H40v1.41z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');
+      }
+      .holographic-panel {
+        background-color: rgba(10, 25, 47, 0.5);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 255, 255, 0.2);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+      }
+      .neon-yellow-text { text-shadow: 0 0 4px rgba(250, 204, 21, 0.5), 0 0 8px rgba(250, 204, 21, 0.5); }
+      .neon-cyan-text { text-shadow: 0 0 4px rgba(34, 211, 238, 0.5), 0 0 8px rgba(34, 211, 238, 0.5); }
+      .neon-button {
+        border: 1px solid #06b6d4; color: #06b6d4; background: transparent;
+        transition: all 0.3s ease; cursor: pointer;
+        box-shadow: 0 0 5px rgba(6, 182, 212, 0.5), inset 0 0 5px rgba(6, 182, 212, 0.3);
+      }
+      .neon-button:hover {
+        background: rgba(6, 182, 212, 0.2); color: #fff;
+        box-shadow: 0 0 15px rgba(6, 182, 212, 0.8), inset 0 0 10px rgba(6, 182, 212, 0.5);
+      }
+      .neon-button-yellow {
+        border: 1px solid #facc15; color: #facc15; background: transparent;
+        transition: all 0.3s ease; cursor: pointer;
+        box-shadow: 0 0 5px rgba(250, 204, 21, 0.5), inset 0 0 5px rgba(250, 204, 21, 0.3);
+      }
+      .neon-button-yellow:hover {
+        background: rgba(250, 204, 21, 0.2); color: #fff;
+        box-shadow: 0 0 15px rgba(250, 204, 21, 0.8), inset 0 0 10px rgba(250, 204, 21, 0.5);
+      }
+      .form-input-ar {
+        background-color: rgba(17, 24, 39, 0.5); border: none;
+        border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        transition: all 0.3s ease;
+      }
+      .form-input-ar:focus {
+        outline: none; background-color: rgba(17, 24, 39, 0.7);
+        border-bottom: 1px solid rgba(0, 255, 255, 1);
+        box-shadow: 0 5px 15px rgba(0, 255, 255, 0.1);
+      }
+      /* Plan card gradients - moderno e responsivo */
+      .plan-card {
+        border: 1px solid rgba(255,255,255,0.03);
+        overflow: hidden;
+        color: #fff;
+        box-shadow: 0 8px 30px rgba(2,6,23,0.6), 0 2px 6px rgba(0,0,0,0.5);
+        transition: transform .28s ease, box-shadow .28s ease;
+      }
+      .plan-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+
+      .plan-gradient-iniciante { background: linear-gradient(135deg, rgba(34,197,94,0.95) 0%, rgba(16,185,129,0.9) 40%, rgba(6,182,212,0.06) 100%); border: 1px solid rgba(34,197,94,0.12); }
+      .plan-gradient-intermediario { background: linear-gradient(135deg, rgba(59,130,246,0.95) 0%, rgba(14,165,233,0.9) 45%, rgba(6,182,212,0.06) 100%); border: 1px solid rgba(59,130,246,0.12); }
+      .plan-gradient-avancado { background: linear-gradient(135deg, #b9934a 0%, #c9a86b 35%, #f5d99a 100%); border: 1px solid rgba(250,204,21,0.12); color: #20140a; }
+      .plan-gradient-elite { background: linear-gradient(135deg, rgba(168,85,247,0.9) 0%, rgba(59,130,246,0.85) 50%, rgba(14,165,233,0.6) 100%); border: 1px solid rgba(168,85,247,0.12); }
+
+      .plan-card h4 { color: inherit !important; }
+      .plan-card p { color: rgba(255,255,255,0.92) !important; }
+      .plan-card li { color: rgba(255,255,255,0.9) !important; }
+      .plan-card .price { font-weight: 700; color: inherit !important; }
+      .plan-cta { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); color: inherit; padding: .35rem .75rem; border-radius: .375rem; transition: background .2s ease, transform .15s ease; }
+      .plan-cta:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+      /* Chart tooltip & meal markers */
+      .chart-tooltip {
+        position: absolute; pointer-events: none; background: rgba(2,6,23,0.95); color: #fff; padding: 6px 8px; border-radius: 6px; font-size: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.6); transform-origin: top left; z-index: 60; display: none;
+      }
+      .meal-marker { fill: rgba(6,182,212,0.95); stroke: rgba(255,255,255,0.06); stroke-width: 1; }
+      .weight-point { cursor: pointer; transition: r .12s ease; }
+      .weight-point:hover { r: 6; }
+      @keyframes fadeIn { from { opacity: 0; transform: scale(0.98) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+      .animate-fade-in { animation: fadeIn 0.6s ease-out forwards; }
+      @keyframes text-fade-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+      .animate-text-fade-in { animation: text-fade-in 0.8s ease-out forwards; }
+      /* Efeito de fumaça para mensagens do usuário (entrada/saída 1s) */
+      @keyframes smokeIn {
+        0% { opacity: 0; transform: translateY(8px) scale(0.99); filter: blur(6px); text-shadow: 0 0 0 rgba(0,0,0,0); }
+        60% { opacity: 0.9; transform: translateY(0) scale(1.002); filter: blur(2px); }
+        100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+      }
+      @keyframes smokeOut {
+        0% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        100% { opacity: 0; transform: translateY(-8px) scale(0.98); filter: blur(8px); }
+      }
+      .smoke-in { animation: smokeIn 1s ease-in-out forwards; }
+      .smoke-out { animation: smokeOut 1s ease-in-out forwards; }
+      /* Gem styles for satisfaction widget */
+      .s-gem { font-size: 18px; padding: .35rem; border-radius: 8px; border: none; cursor: pointer; display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; box-shadow: 0 6px 14px rgba(2,6,23,0.6); }
+      .s-gem:focus { outline: 2px solid rgba(255,255,255,0.12); }
+      /* 1..4 green emerald shades (1 weakest) */
+      .s-gem-1 { background: linear-gradient(180deg, rgba(132,199,145,0.18), rgba(34,197,94,0.06)); color: #6ee7b7; }
+      .s-gem-2 { background: linear-gradient(180deg, rgba(34,197,94,0.12), rgba(16,185,129,0.06)); color: #4ade80; box-shadow: 0 8px 20px rgba(16,185,129,0.12); }
+      .s-gem-3 { background: linear-gradient(180deg, rgba(16,185,129,0.18), rgba(6,182,212,0.04)); color: #10b981; box-shadow: 0 10px 26px rgba(16,185,129,0.16); }
+      .s-gem-4 { background: linear-gradient(180deg, rgba(6,182,212,0.18), rgba(34,197,94,0.06)); color: #059669; box-shadow: 0 12px 30px rgba(6,182,212,0.18); transform: translateY(-1px); }
+      /* 5 = gold */
+      .s-gem-5 { background: linear-gradient(180deg, #f6e05e, #f59e0b); color: #92400e; box-shadow: 0 12px 36px rgba(245,158,11,0.25); transform: translateY(-2px); }
+
+      .s-gem { transition: background-color 1s ease, box-shadow 1s ease, transform .15s ease, opacity .3s ease; }
+      .s-gem:hover { transform: translateY(-3px); }
+      /* Estado selecionado - fixa até desfazer */
+      .s-selected { transform: translateY(-4px); box-shadow: 0 18px 46px rgba(0,0,0,0.45); border: 1px solid rgba(255,255,255,0.08); }
+      .gem-inline { display:inline-flex; width:28px; height:28px; padding:.2rem; border-radius:6px; font-size:16px; vertical-align:middle; }
+      .dim { opacity: 0.28; filter: grayscale(20%); box-shadow: none; transform: none; }
+      .hidden { display: none !important; }
+    </style>
+  </head>
+  <body>
+    <header class="max-w-6xl mx-auto p-6 flex items-center justify-between">
+      <div>
+        <h1 class="text-3xl font-bold text-yellow-400 neon-yellow-text">Larica Marcial</h1>
+        <p class="text-cyan-200/80 text-sm">Transforme sua dieta em sua arma secreta.</p>
+      </div>
+      <nav class="space-x-4">
+        <a id="navAuth" class="text-cyan-200/80 hover:text-white cursor-pointer">Entrar</a>
+        <a id="navDashboard" class="text-cyan-200/80 hover:text-white cursor-pointer">Painel</a>
+        <a id="navPlano" class="text-cyan-200/80 hover:text-white cursor-pointer">Plano</a>
+        <a id="navPlansPanel" class="text-cyan-200/80 hover:text-white cursor-pointer">Planos & Benefícios</a>
+      </nav>
+    </header>
+    <!-- Widget de avaliação do site (1-5) com gemas coloridas -->
+    <div id="satisfactionWidget" class="max-w-6xl mx-auto px-6 mb-4 flex items-center gap-4">
+      <div class="text-sm text-cyan-200/80">Avalie nosso site:</div>
+      <div id="satisfactionButtons" class="flex gap-2">
+        <button class="s-gem s-gem-1" aria-label="Avaliar 1" onclick="submitSatisfaction(1)">👍</button>
+        <button class="s-gem s-gem-2" aria-label="Avaliar 2" onclick="submitSatisfaction(2)">👍</button>
+        <button class="s-gem s-gem-3" aria-label="Avaliar 3" onclick="submitSatisfaction(3)">👍</button>
+        <button class="s-gem s-gem-4" aria-label="Avaliar 4" onclick="submitSatisfaction(4)">👍</button>
+        <button class="s-gem s-gem-5" aria-label="Avaliar 5" onclick="submitSatisfaction(5)">👍</button>
+      </div>
+      <div id="satisfactionInfo" class="text-xs text-cyan-300/70 ml-auto">Obrigado por contribuir!</div>
+    </div>
+
+    <main class="max-w-6xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Auth / Hero -->
+      <section id="auth" class="lg:col-span-1 holographic-panel p-6 rounded-lg">
+        <h2 class="text-xl font-bold text-yellow-400 neon-yellow-text mb-2">Apresentação</h2>
+        <p class="text-cyan-200/80 text-sm mb-4">Assista ao vídeo e conecte-se para começar seu protocolo.</p>
+        <div class="mb-4 rounded-lg overflow-hidden border border-cyan-400/10">
+          <div class="relative h-0" style="padding-bottom:56.25%">
+            <video class="absolute top-0 left-0 w-full h-full object-cover" controls playsinline>
+              <source src="video/Nov_12__2039_38s_202511122134_41joh.mp4" type="video/mp4" />
+              <source src="video/Nov_12__2039_38s_202511122134_41joh.webm" type="video/webm" />
+              Seu navegador não suporta vídeo HTML5.
+            </video>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <h3 class="text-sm text-cyan-100/90 mb-2">Entrar / Registrar</h3>
+          <form id="authForm" class="space-y-3" onsubmit="handleAuthSubmit(event)">
+            <input id="authEmail" class="form-input-ar w-full py-2 px-3 rounded-md" type="email" placeholder="E-mail" required />
+            <input id="authPassword" class="form-input-ar w-full py-2 px-3 rounded-md" type="password" placeholder="Senha" required />
+            <div class="flex gap-2">
+              <button type="submit" class="neon-button-yellow flex-1 py-2 rounded-md">Entrar</button>
+              <button type="button" class="neon-button flex-1 py-2 rounded-md" onclick="openRegisterModal()">Registrar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Dashboard preview -->
+      <section id="dashboard" class="lg:col-span-2 holographic-panel p-6 rounded-lg">
+        <header class="flex justify-between items-center mb-4">
+          <div>
+            <h2 class="text-2xl font-bold text-white">Olá, Atleta!</h2>
+            <p class="text-cyan-200/80 text-sm">Painel de controle.</p>
+            <!-- Campo de mensagens do usuário com animação de fumaça -->
+            <div id="userMessageWrapper" class="mt-2">
+              <p id="userMessageText" class="text-sm text-yellow-100 italic smoke-in" style="display:block">Carregando mensagem...</p>
+            </div>
+          </div>
+          <button class="neon-button py-2 px-4 rounded-md" onclick="handleLogout()">Desconectar</button>
+        </header>
+
+        <!-- Texto motivacional removido conforme solicitado -->
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <!-- Peso -->
+          <div class="bg-gray-900/40 p-4 rounded-md border border-cyan-400/10">
+            <h4 class="text-sm font-semibold text-white">Progresso de Peso</h4>
+            <div id="weightChartWrapper" class="mt-3 relative">
+                  <svg id="weightChart" viewBox="0 0 320 160" preserveAspectRatio="none" class="w-full h-36"></svg>
+                  <div id="weightInfo" class="absolute top-2 right-2 text-right text-xs space-y-1">
+                    <div id="lastWeightLabel" class="bg-black/50 px-2 py-1 rounded text-yellow-300">Último peso: -- kg</div>
+                    <div id="lastMealLabel" class="bg-black/50 px-2 py-1 rounded text-cyan-200">Última refeição: —</div>
+                  </div>
+                </div>
+          </div>
+
+          <!-- Refeições -->
+          <div class="bg-gray-900/40 p-4 rounded-md border border-cyan-400/10">
+            <h4 class="text-sm font-semibold text-white">Refeições de Hoje</h4>
+            <div id="mealsList" class="mt-2 text-sm text-cyan-100/80">
+              <ul class="list-none">
+                <li>- Café da Manhã: Ovos mexidos</li>
+                <li>- Almoço: Frango grelhado</li>
+              </ul>
+            </div>
+            <!-- Mensagens aleatórias removidas conforme solicitado -->
+            
+            <!-- Destaque do Momento removido conforme solicitação do usuário -->
+          </div>
+
+          <!-- Ações -->
+          <div class="bg-gray-900/40 p-4 rounded-md border border-cyan-400/10">
+            <h4 class="text-sm font-semibold text-white">Ações Rápidas</h4>
+            <div class="mt-2 flex flex-col gap-2">
+              <button class="neon-button py-2 rounded-md" onclick="openMealModal()">Registrar Refeição</button>
+              <button class="neon-button py-2 rounded-md" onclick="openWeightModal()">Registrar Peso</button>
+              <button class="neon-button py-2 rounded-md" onclick="openProfileModal()">Meu Perfil</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-cyan-900/10 p-4 rounded-md border border-cyan-400/10">
+          <h3 class="text-lg font-semibold text-yellow-400 neon-yellow-text">Plano Alimentar</h3>
+          <p class="text-cyan-100/90 mt-2">Exemplo de plano para atletas — refeições balanceadas, controle de macros e recomendações.</p>
+        </div>
+      </section>
+
+      <!-- Plano completo -->
+      <section id="plano" class="lg:col-span-3 mt-2">
+        <div class="holographic-panel p-6 rounded-lg">
+          <h3 class="text-xl font-bold text-white mb-2" id="mealPlanTitle">Plano Alimentar Completo</h3>
+          <p class="text-cyan-100/80 text-sm mb-4" id="mealPlanSubtitle">Selecione seu perfil para ver o plano personalizado.</p>
+          <div id="mealPlanContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Plano dinâmico será carregado aqui -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal Refeição -->
+    <div id="mealModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div class="holographic-panel p-8 rounded-lg w-full max-w-sm mx-4">
+        <h2 class="text-xl font-bold text-yellow-400 mb-4 neon-yellow-text">Registrar Refeição</h2>
+        <form id="mealForm" onsubmit="saveMeal(event)" novalidate>
+          <label class="block text-sm font-medium text-cyan-200/80 mb-2">Tipo de Refeição</label>
+          <select id="mealType" class="form-input-ar w-full py-2 px-3 rounded-md text-white mb-4" required>
+            <option value="">-- Selecione --</option>
+            <option value="Café da Manhã">Café da Manhã</option>
+            <option value="Almoço">Almoço</option>
+            <option value="Lanche">Lanche</option>
+            <option value="Jantar">Jantar</option>
+          </select>
+          <label class="block text-sm font-medium text-cyan-200/80 mb-2">Descrição</label>
+          <textarea id="mealDesc" class="form-input-ar w-full py-2 px-3 rounded-md text-white mb-4" rows="4" placeholder="Ex: 150g de frango, 100g de arroz..." required></textarea>
+          <div class="flex justify-end gap-4">
+            <button type="button" class="py-2 px-4 rounded-md text-sm neon-button" onclick="closeMealModal()">Cancelar</button>
+            <button type="submit" class="py-2 px-4 rounded-md text-sm font-bold neon-button-yellow">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Peso -->
+    <div id="weightModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div class="holographic-panel p-8 rounded-lg w-full max-w-sm mx-4">
+        <h2 class="text-xl font-bold text-yellow-400 mb-4 neon-yellow-text">Registrar Peso</h2>
+        <form id="weightForm" onsubmit="saveWeight(event)" novalidate>
+          <label class="block text-sm font-medium text-cyan-200/80 mb-2">Peso Atual (kg)</label>
+          <input id="weightInput" type="number" step="0.1" class="form-input-ar w-full py-2 px-3 rounded-md text-white mb-4" placeholder="Ex: 75.5" required />
+          <div class="flex justify-end gap-4">
+            <button type="button" class="py-2 px-4 rounded-md text-sm neon-button" onclick="closeWeightModal()">Cancelar</button>
+            <button type="submit" class="py-2 px-4 rounded-md text-sm font-bold neon-button-yellow">Salvar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Perfil do Usuário -->
+    <div id="profileModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div class="holographic-panel p-8 rounded-lg w-full max-w-md mx-4 overflow-y-auto max-h-[90vh]">
+        <h2 class="text-xl font-bold text-yellow-400 mb-4 neon-yellow-text">Seu Perfil</h2>
+        <form id="profileForm" onsubmit="saveUserProfile(event)">
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-cyan-200/80 mb-2">Nome</label>
+            <input id="userName" type="text" class="form-input-ar w-full py-2 px-3 rounded-md text-white" placeholder="Ex: João Silva" required />
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-cyan-200/80 mb-2">Nível de Experiência</label>
+            <select id="userExperience" class="form-input-ar w-full py-2 px-3 rounded-md text-white" required>
+              <option value="">-- Selecione --</option>
+              <option value="iniciante">Iniciante (0-6 meses)</option>
+              <option value="intermediario">Intermediário (6-24 meses)</option>
+              <option value="avancado">Avançado (2+ anos)</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-cyan-200/80 mb-2">Objetivo Principal</label>
+            <select id="userGoal" class="form-input-ar w-full py-2 px-3 rounded-md text-white" required>
+              <option value="">-- Selecione --</option>
+              <option value="perder-peso">Perder peso</option>
+              <option value="ganhar-musculo">Ganhar músculo</option>
+              <option value="manter-forma">Manter forma</option>
+              <option value="performance">Performance no esporte</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-cyan-200/80 mb-2">Frequência de Treino/Semana</label>
+            <select id="userFrequency" class="form-input-ar w-full py-2 px-3 rounded-md text-white" required>
+              <option value="">-- Selecione --</option>
+              <option value="1-2">1-2 dias</option>
+              <option value="3-4">3-4 dias</option>
+              <option value="5-6">5-6 dias</option>
+              <option value="diario">Diariamente</option>
+            </select>
+          </div>
+          <div class="flex justify-end gap-4">
+            <button type="button" class="py-2 px-4 rounded-md text-sm neon-button" onclick="closeProfileModal()">Cancelar</button>
+            <button type="submit" class="py-2 px-4 rounded-md text-sm font-bold neon-button-yellow">Salvar Perfil</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Registro de Novo Usuário -->
+    <div id="registerModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div class="holographic-panel p-8 rounded-lg w-full max-w-md mx-4 overflow-y-auto max-h-[90vh]">
+        <h2 class="text-xl font-bold text-yellow-400 mb-4 neon-yellow-text">Criar Novo Cadastro</h2>
+        <form id="registerForm" onsubmit="registerUser(event)" novalidate>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-cyan-200/80 mb-2">Nome Completo</label>
+            <input id="regName" type="text" class="form-input-ar w-full py-2 px-3 rounded-md text-white" placeholder="Ex: João Silva" required />
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-cyan-200/80 mb-2">E-mail</label>
+            <input id="regEmail" type="email" class="form-input-ar w-full py-2 px-3 rounded-md text-white" placeholder="seu@email.com" required />
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-cyan-200/80 mb-2">Senha</label>
+            <input id="regPassword" type="password" class="form-input-ar w-full py-2 px-3 rounded-md text-white" placeholder="Min. 6 caracteres" minlength="6" required />
+          </div>
+          <div class="mb-4">
+            <label class="block text-sm font-medium text-cyan-200/80 mb-2">Confirmar Senha</label>
+            <input id="regPasswordConfirm" type="password" class="form-input-ar w-full py-2 px-3 rounded-md text-white" placeholder="Repita a senha" required />
+          </div>
+          <div class="flex justify-end gap-4">
+            <button type="button" class="py-2 px-4 rounded-md text-sm neon-button" onclick="closeRegisterModal()">Cancelar</button>
+            <button type="submit" class="py-2 px-4 rounded-md text-sm font-bold neon-button-yellow">Registrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal Planos & Benefícios -->
+    <div id="plansPanelModal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+      <div class="holographic-panel p-6 rounded-lg w-full max-w-4xl mx-4 overflow-y-auto max-h-[80vh]">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-2xl font-bold text-white">Planos & Benefícios</h2>
+          <button class="neon-button" onclick="closePlansPanel()">Fechar</button>
+        </div>
+        <div id="plansContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Plan cards will be rendered here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ===== Banco de Dados de Usuários =====
+      function initializeUserDatabase() {
+        let users = JSON.parse(localStorage.getItem('larica_users') || '[]');
+        if (users.length === 0) {
+          // Criar usuário de demonstração
+          const demoUser = {
+            id: 'demo_' + Date.now(),
+            name: 'Atleta Demo',
+            email: 'demo@larica.com',
+            passwordHash: simpleHash('demo123'),
+            createdAt: new Date().toISOString()
+          };
+          users.push(demoUser);
+          localStorage.setItem('larica_users', JSON.stringify(users));
+        }
+        return users;
+      }
+
+      function simpleHash(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+          const char = str.charCodeAt(i);
+          hash = ((hash << 5) - hash) + char;
+          hash = hash & hash; // Conversão para int de 32 bits
+        }
+        return Math.abs(hash).toString(16);
+      }
+
+      function getUserByEmail(email) {
+        const users = JSON.parse(localStorage.getItem('larica_users') || '[]');
+        return users.find(u => u.email.toLowerCase() === email.toLowerCase());
+      }
+
+      function createUser(name, email, password) {
+        const users = JSON.parse(localStorage.getItem('larica_users') || '[]');
+        if (getUserByEmail(email)) return { success: false, message: 'E-mail já registrado' };
+
+        const newUser = {
+          id: 'user_' + Date.now(),
+          name,
+          email,
+          passwordHash: simpleHash(password),
+          createdAt: new Date().toISOString()
+        };
+        users.push(newUser);
+        localStorage.setItem('larica_users', JSON.stringify(users));
+        return { success: true, user: newUser };
+      }
+
+      function authenticateUser(email, password) {
+        const user = getUserByEmail(email);
+        if (!user) return { success: false, message: 'Usuário não encontrado' };
+        if (user.passwordHash !== simpleHash(password)) return { success: false, message: 'Senha incorreta' };
+        return { success: true, user };
+      }
+
+      function getCurrentUser() {
+        const currentUserId = localStorage.getItem('larica_current_user');
+        if (!currentUserId) return null;
+        const users = JSON.parse(localStorage.getItem('larica_users') || '[]');
+        return users.find(u => u.id === currentUserId);
+      }
+
+      function setCurrentUser(userId) {
+        localStorage.setItem('larica_current_user', userId);
+      }
+
+      function logout() {
+        localStorage.removeItem('larica_current_user');
+      }
+
+      // Inicializar banco de dados na carga
+      initializeUserDatabase();
+
+      let weightData = JSON.parse(localStorage.getItem('weights')) || [
+        { date: '2024-07-01', weight: 80.5 },
+        { date: '2024-07-08', weight: 80.2 },
+        { date: '2024-07-15', weight: 79.8 },
+        { date: '2024-07-22', weight: 79.9 },
+        { date: '2024-08-01', weight: 79.2 },
+        { date: '2024-08-08', weight: 78.8 },
+        { date: '2024-08-15', weight: 78.5 }
+      ];
+
+      const MOTIVATIONAL = [
+        "O primeiro passo é o mais importante. A disciplina começa no prato.",
+        "Cada refeição é um tijolo na construção do seu templo. Continue firme.",
+        "A recuperação é tão crucial quanto o treino. Seus micronutrientes são seus aliados.",
+        "Você está refinando sua máquina. Cada detalhe nutricional conta para a performance.",
+      ];
+
+      const JOKES = [
+        "Por que o lutador de Jiu-Jitsu não come fast food? Porque ele prefere finalizar o prato.",
+        "Qual o cúmulo da fome para um judoca? É ter uma queda por doces.",
+        "Meu frango com batata doce me olhou hoje e disse: 'De novo, sério?'",
+        "Estado civil: esperando ansiosamente pela refeição livre.",
+      ];
+
+      function scrollTo(id) {
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+      }
+
+      function renderWeightChart(data) {
+        const svg = document.getElementById('weightChart');
+        const width = 320, height = 160, padding = 28;
+        svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+
+        if (!data || data.length < 2) {
+          svg.innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="rgba(0,255,255,0.5)">Dados insuficientes</text>';
+          return;
+        }
+
+        const weights = data.map(d => d.weight);
+        const minW = Math.min(...weights) - 1;
+        const maxW = Math.max(...weights) + 1;
+        const getX = (i) => padding + (i / (data.length - 1)) * (width - padding * 2);
+        const getY = (w) => height - padding - ((w - minW) / (maxW - minW)) * (height - padding * 2);
+        const pathD = data.map((d, i) => `${i === 0 ? 'M' : 'L'} ${getX(i)} ${getY(d.weight)}`).join(' ');
+
+        // Gradient
+        const defs = document.createElementNS('http://www.w3.org/2000/svg','defs');
+        // line gradient
+        const grad = document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+        grad.setAttribute('id','lineGradient'); grad.setAttribute('x1','0'); grad.setAttribute('x2','1');
+        const s1 = document.createElementNS('http://www.w3.org/2000/svg','stop'); s1.setAttribute('offset','0%'); s1.setAttribute('stop-color','#facc15');
+        const s2 = document.createElementNS('http://www.w3.org/2000/svg','stop'); s2.setAttribute('offset','100%'); s2.setAttribute('stop-color','#06b6d4');
+        grad.appendChild(s1); grad.appendChild(s2); defs.appendChild(grad);
+
+        // area gradient (soft fill below line)
+        const areaGrad = document.createElementNS('http://www.w3.org/2000/svg','linearGradient');
+        areaGrad.setAttribute('id','areaGradient'); areaGrad.setAttribute('x1','0'); areaGrad.setAttribute('x2','0'); areaGrad.setAttribute('y1','0'); areaGrad.setAttribute('y2','1');
+        const a1 = document.createElementNS('http://www.w3.org/2000/svg','stop'); a1.setAttribute('offset','0%'); a1.setAttribute('stop-color','#06b6d4'); a1.setAttribute('stop-opacity','0.15');
+        const a2 = document.createElementNS('http://www.w3.org/2000/svg','stop'); a2.setAttribute('offset','100%'); a2.setAttribute('stop-color','#06b6d4'); a2.setAttribute('stop-opacity','0');
+        areaGrad.appendChild(a1); areaGrad.appendChild(a2); defs.appendChild(areaGrad);
+        svg.appendChild(defs);
+
+        // Path (line)
+        const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+        path.setAttribute('d', pathD); path.setAttribute('fill','none'); path.setAttribute('stroke','url(#lineGradient)');
+        path.setAttribute('stroke-width','2.5'); path.setAttribute('stroke-linejoin','round');
+        path.setAttribute('stroke-linecap','round');
+        path.setAttribute('style','stroke-dasharray:1000; stroke-dashoffset:1000; transition: stroke-dashoffset 900ms ease-out;');
+        svg.appendChild(path);
+
+        // Area fill under path (smooth polygon)
+        const areaD = pathD + ` L ${getX(data.length-1)} ${height-padding} L ${getX(0)} ${height-padding} Z`;
+        const area = document.createElementNS('http://www.w3.org/2000/svg','path');
+        area.setAttribute('d', areaD); area.setAttribute('fill','url(#areaGradient)'); area.setAttribute('opacity','0.9');
+        svg.insertBefore(area, path);
+
+        // Animate line draw
+        requestAnimationFrame(() => { path.style.strokeDashoffset = '0'; });
+
+        // Tooltip container (absolute positioned over svg wrapper)
+        let tooltip = document.querySelector('.chart-tooltip');
+        if (!tooltip) { tooltip = document.createElement('div'); tooltip.className = 'chart-tooltip'; document.body.appendChild(tooltip); }
+
+        // Points with interactive tooltip
+        data.forEach((d,i) => {
+          const cx = getX(i); const cy = getY(d.weight);
+          const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          c.setAttribute('cx', String(cx)); c.setAttribute('cy', String(cy));
+          c.setAttribute('r','4'); c.setAttribute('fill','#facc15'); c.setAttribute('class','weight-point');
+          svg.appendChild(c);
+
+          c.addEventListener('mousemove', (ev) => {
+            tooltip.style.display = 'block';
+            tooltip.innerHTML = `<strong>${d.date}</strong><div>Peso: ${parseFloat(d.weight).toFixed(1)} kg</div>`;
+            const rect = tooltip.getBoundingClientRect();
+            tooltip.style.left = (ev.clientX + 12) + 'px';
+            tooltip.style.top = (ev.clientY - rect.height/2) + 'px';
+          });
+          c.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+        });
+
+        // Meal markers: read meals and render markers aligned by date
+        const meals = JSON.parse(localStorage.getItem('meals') || '[]');
+        if (meals && meals.length > 0) {
+          // helper to find nearest index by date
+          const findNearestIndexByDate = (dateStr) => {
+            let idx = data.findIndex(x => x.date === dateStr);
+            if (idx !== -1) return idx;
+            // fallback: find nearest by absolute time difference
+            const target = new Date(dateStr).getTime();
+            let nearest = 0; let mind = Infinity;
+            data.forEach((x,i) => { const dtime = new Date(x.date).getTime(); const diff = Math.abs(dtime - target); if (diff < mind) { mind = diff; nearest = i; } });
+            return nearest;
+          };
+
+          meals.forEach(m => {
+            const idx = findNearestIndexByDate(m.date || new Date().toISOString().split('T')[0]);
+            const mx = getX(idx); const my = getY(data[idx].weight) - 12;
+            const marker = document.createElementNS('http://www.w3.org/2000/svg','rect');
+            marker.setAttribute('x', String(mx - 5)); marker.setAttribute('y', String(my - 6)); marker.setAttribute('width','10'); marker.setAttribute('height','10'); marker.setAttribute('rx','2'); marker.setAttribute('class','meal-marker');
+            svg.appendChild(marker);
+
+            marker.addEventListener('mousemove', (ev) => {
+              tooltip.style.display = 'block';
+              tooltip.innerHTML = `<strong>${m.name}</strong><div>${m.description}</div><div class="text-xs">${m.date || ''} ${m.timestamp || ''}</div>`;
+              const rect = tooltip.getBoundingClientRect();
+              tooltip.style.left = (ev.clientX + 12) + 'px';
+              tooltip.style.top = (ev.clientY - rect.height/2) + 'px';
+            });
+            marker.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+          });
+        }
+      }
+
+      function rotateText(elId, items, interval=5000) {
+        const el = document.getElementById(elId);
+        if(!el) return;
+        let idx = 0;
+        el.textContent = items[0];
+        setInterval(() => {
+          idx = (idx + 1) % items.length;
+          el.textContent = items[idx];
+          el.classList.remove('animate-text-fade-in');
+          void el.offsetWidth;
+          el.classList.add('animate-text-fade-in');
+        }, interval);
+      }
+
+      // Rotação de mensagens para usuário com efeito de fumaça
+      // Entrada/saída: 1s cada; duração fixa por mensagem: fixationTime (ms)
+      function rotateUserMessages(elId, items, fixationTime = 60000) {
+        const el = document.getElementById(elId);
+        if (!el || !items || items.length === 0) return;
+        let idx = 0;
+        const fadeIn = 1000; const fadeOut = 1000;
+        const displayTime = fixationTime - fadeOut; // quando iniciar fade out
+
+        const showNext = () => {
+          idx = (idx + 1) % items.length;
+          // apply smoke-in
+          el.classList.remove('smoke-out');
+          el.classList.add('smoke-in');
+          el.textContent = items[idx];
+
+          // schedule fade out
+          setTimeout(() => {
+            el.classList.remove('smoke-in');
+            el.classList.add('smoke-out');
+            // after fade out, show next
+            setTimeout(() => { showNext(); }, fadeOut);
+          }, displayTime - fadeIn);
+        };
+
+        // initialize
+        el.textContent = items[0];
+        el.classList.add('smoke-in');
+        setTimeout(() => {
+          el.classList.remove('smoke-in');
+          el.classList.add('smoke-out');
+          setTimeout(() => { showNext(); }, fadeOut);
+        }, displayTime);
+      }
+
+      // Função de destaque removida — lógica de rotação retirada conforme solicitado
+
+      function openMealModal() { document.getElementById('mealModal').classList.remove('hidden'); }
+      function closeMealModal() { document.getElementById('mealModal').classList.add('hidden'); document.getElementById('mealForm').reset(); }
+      function openWeightModal() { document.getElementById('weightModal').classList.remove('hidden'); }
+      function closeWeightModal() { document.getElementById('weightModal').classList.add('hidden'); document.getElementById('weightForm').reset(); }
+
+      function saveMeal(e) {
+        e.preventDefault();
+        const type = document.getElementById('mealType').value;
+        const desc = document.getElementById('mealDesc').value;
+        if (!type || !type.trim()) { alert('Selecione um tipo de refeição'); return; }
+        if (!desc || !desc.trim()) { alert('Descreva a refeição'); return; }
+        try {
+          let meals = JSON.parse(localStorage.getItem('meals') || '[]');
+          const mealObj = { id: Date.now(), name: type, description: desc, timestamp: new Date().toLocaleTimeString(), date: new Date().toISOString().split('T')[0] };
+          meals.unshift(mealObj);
+          meals = meals.slice(0, 20);
+          localStorage.setItem('meals', JSON.stringify(meals));
+
+          // Update UI list
+          const mealsDiv = document.getElementById('mealsList');
+          if (mealsDiv) {
+            let ul = mealsDiv.querySelector('ul');
+            if (!ul) { ul = document.createElement('ul'); ul.className = 'list-none'; mealsDiv.innerHTML = ''; mealsDiv.appendChild(ul); }
+            const li = document.createElement('li'); li.textContent = `- ${mealObj.name}: ${mealObj.description}`; ul.insertBefore(li, ul.firstChild);
+          }
+
+          // Update last meal label
+          const lastMealLabel = document.getElementById('lastMealLabel');
+          if (lastMealLabel) lastMealLabel.textContent = `Última refeição: ${mealObj.name} — ${mealObj.description.substring(0,40)}${mealObj.description.length>40? '...':''}`;        
+          // Re-render chart to show meal marker
+          try { renderWeightChart(weightData); } catch (err) { console.warn('Erro ao redesenhar gráfico:', err); }
+
+          alert(`✓ ${type} registrada!`);
+          document.getElementById('mealForm').reset();
+          closeMealModal();
+        } catch (err) {
+          console.error('Erro ao salvar refeição:', err);
+          alert('Erro ao salvar refeição. Tente novamente.');
+        }
+      }
+
+      function saveWeight(e) {
+        e.preventDefault();
+        const weightInput = document.getElementById('weightInput').value;
+        const weight = parseFloat(weightInput);
+        if (!weightInput || isNaN(weight) || weight <= 0) { alert('Peso inválido'); return; }
+        try {
+          const entry = { date: new Date().toISOString().split('T')[0], weight };
+          let weights = JSON.parse(localStorage.getItem('weights') || '[]');
+          weights = weights.filter(w => w.date !== entry.date);
+          weights.push(entry);
+          weights.sort((a, b) => new Date(a.date) - new Date(b.date));
+          localStorage.setItem('weights', JSON.stringify(weights));
+          weightData = weights;
+          renderWeightChart(weightData);
+          // Update last weight label
+          const lastWeightLabel = document.getElementById('lastWeightLabel');
+          if (lastWeightLabel) lastWeightLabel.textContent = `Último peso: ${weight.toFixed(1)} kg`;
+
+          alert(`✓ Peso ${weight.toFixed(1)} kg registrado!`);
+          document.getElementById('weightForm').reset();
+          closeWeightModal();
+        } catch (err) {
+          console.error('Erro ao salvar peso:', err);
+          alert('Erro ao salvar peso. Tente novamente.');
+        }
+      }
+
+      function handleAuthSubmit(e) {
+        e.preventDefault();
+        const email = document.getElementById('authEmail').value;
+        const password = document.getElementById('authPassword').value;
+
+        if (!email || !password) { alert('Preencha e-mail e senha'); return; }
+
+        const result = authenticateUser(email, password);
+        if (result.success) {
+          setCurrentUser(result.user.id);
+          alert(`✓ Bem-vindo ${result.user.name}!`);
+          document.getElementById('authForm').reset();
+        } else {
+          alert(`❌ ${result.message}`);
+        }
+      }
+
+      function openRegisterModal() {
+        const m = document.getElementById('registerModal');
+        if (m) m.classList.remove('hidden');
+      }
+
+      function closeRegisterModal() {
+        const m = document.getElementById('registerModal');
+        if (m) m.classList.add('hidden');
+        document.getElementById('registerForm').reset();
+      }
+
+      function registerUser(e) {
+        e.preventDefault();
+        const name = document.getElementById('regName').value;
+        const email = document.getElementById('regEmail').value;
+        const password = document.getElementById('regPassword').value;
+        const passwordConfirm = document.getElementById('regPasswordConfirm').value;
+
+        if (!name || !email || !password || !passwordConfirm) {
+          alert('Preencha todos os campos');
+          return;
+        }
+
+        if (password.length < 6) {
+          alert('Senha deve ter no mínimo 6 caracteres');
+          return;
+        }
+
+        if (password !== passwordConfirm) {
+          alert('Senhas não conferem');
+          return;
+        }
+
+        const result = createUser(name, email, password);
+        if (result.success) {
+          setCurrentUser(result.user.id);
+          alert(`✓ Cadastro realizado! Bem-vindo ${name}!`);
+          document.getElementById('registerForm').reset();
+          closeRegisterModal();
+          document.getElementById('authForm').reset();
+        } else {
+          alert(`❌ ${result.message}`);
+        }
+      }
+
+      function handleLogout() {
+        if (confirm('Desconectar?')) {
+          logout();
+          alert('✓ Desconectado com sucesso!');
+          document.getElementById('authForm').reset();
+        }
+      }
+
+      // Close modals on outside click (guard exists)
+      const mealModalEl = document.getElementById('mealModal');
+      if (mealModalEl) mealModalEl.addEventListener('click', (e) => { if(e.target.id === 'mealModal') closeMealModal(); });
+      const weightModalEl = document.getElementById('weightModal');
+      if (weightModalEl) weightModalEl.addEventListener('click', (e) => { if(e.target.id === 'weightModal') closeWeightModal(); });
+      const profileModalEl = document.getElementById('profileModal');
+      if (profileModalEl) profileModalEl.addEventListener('click', (e) => { if(e.target.id === 'profileModal') closeProfileModal(); });
+      const registerModalEl = document.getElementById('registerModal');
+      if (registerModalEl) registerModalEl.addEventListener('click', (e) => { if(e.target.id === 'registerModal') closeRegisterModal(); });
+      const plansPanelEl = document.getElementById('plansPanelModal');
+      if (plansPanelEl) plansPanelEl.addEventListener('click', (e) => { if(e.target.id === 'plansPanelModal') closePlansPanel(); });
+
+      // Plans panel data and functions
+      const PLANS = [
+        {
+          id: 'iniciante',
+          title: 'Plano Iniciante',
+          subtitle: 'Hábitos e base',
+          benefits: ['Avaliação inicial', 'Plano alimentar simplificado', 'Acesso a mensagens motivacionais'],
+          price: 'Gratuito'
+        },
+        {
+          id: 'intermediario',
+          title: 'Plano Intermediário',
+          subtitle: 'Estrutura e consistência',
+          benefits: ['Ajuste de macros', 'Sugestões de refeições semanais', 'Suporte por mensagem'],
+          price: 'R$29/mês'
+        },
+        {
+          id: 'avancado',
+          title: 'Plano Avançado',
+          subtitle: 'Refinamento de performance',
+          benefits: ['Ciclagem de carboidratos', 'Apoio para competição', 'Refeições otimizadas'],
+          price: 'R$79/mês'
+        },
+        {
+          id: 'elite',
+          title: 'Plano Elite',
+          subtitle: 'Alta performance',
+          benefits: ['Acompanhamento personalizado', 'Suporte prioritário', 'Protocolos avançados'],
+          price: 'Sob consulta'
+        }
+      ];
+
+      // Banco de Dados de Planos Alimentares
+      const MEAL_PLANS = {
+        iniciante: {
+          title: 'Plano Iniciante: A Base de Tudo',
+          subtitle: 'Construindo hábitos alimentares saudáveis',
+          principles: [
+            'Comer alimentos variados e equilibrados',
+            'Hydration é essencial - beba bastante água',
+            'Proteínas em cada refeição para músculos fortes',
+            'Evitar excessos antes do treino',
+          ],
+          meals: {
+            'Café da Manhã': [
+              'Ovos mexidos com pão integral e frutas (banana, morango)',
+              'Vitamina de banana com leite e aveia',
+              'Iogurte natural com granola e mel'
+            ],
+            'Almoço': [
+              'Frango grelhado, arroz integral, feijão e salada',
+              'Carne moída, batata e brócolis',
+              'Peixe assado com legumes cozidos'
+            ],
+            'Lanche': [
+              'Frutas frescas (maçã, laranja)',
+              'Iogurte com mel',
+              'Sanduíche de pão integral com patê'
+            ],
+            'Jantar': [
+              'Sopa de legumes com frango',
+              'Omelete com queijo e salada',
+              'Peito de frango com batata doce'
+            ]
+          }
+        },
+        intermediario: {
+          title: 'Plano Intermediário: Estrutura e Consistência',
+          subtitle: 'Otimizando macronutrientes para seus treinos',
+          principles: [
+            'Carboidratos são seu combustível - consuma pré-treino',
+            'Proteína em todas as refeições para recuperação',
+            'Gorduras boas para manutenção hormonal',
+            'Planejamento de refeições é a chave'
+          ],
+          meals: {
+            'Café da Manhã': [
+              'Crepioca com queijo minas e café com leite',
+              'Proteína em pó com banana e aveia',
+              'Pão integral com ovos mexidos e tomate'
+            ],
+            'Almoço': [
+              '150g frango grelhado, arroz integral, feijão e salada colorida',
+              'Patinho moído com purê de batata doce e brócolis',
+              'Macarrão integral com almôndegas de frango'
+            ],
+            'Pré-Treino (Lanche)': [
+              'Banana com pasta de amendoim',
+              'Iogurte com granola',
+              'Batata doce com mel'
+            ],
+            'Jantar/Pós-Treino': [
+              'Omelete proteica (3 ovos) com salada',
+              'Batata doce com atum enlatado',
+              'Frango desfiado em wrap integral'
+            ]
+          }
+        },
+        avancado: {
+          title: 'Plano Avançado: Refinamento Total',
+          subtitle: 'Periodização e otimização de macros',
+          principles: [
+            'Ciclo de carboidratos baseado na intensidade do treino',
+            'Alimentos anti-inflamatórios (peixes, azeite, cúrcuma)',
+            'Timing de nutrientes para máxima recuperação',
+            'Qualidade superior em cada alimento escolhido'
+          ],
+          meals: {
+            'Café da Manhã': [
+              'Mingau de aveia com whey protein, frutas vermelhas e amêndoas',
+              'Ovos com espinafre, cogumelos e abacate',
+              'Crepioca com banana e canela'
+            ],
+            'Almoço': [
+              '200g salmão grelhado, quinoa e aspargos com azeite',
+              'Filé de frango, batata baroa e salada de folhas escuras',
+              'Tilápia assada com batata doce e legumes'
+            ],
+            'Lanche': [
+              'Iogurte grego com nozes',
+              'Shake de whey com água de coco',
+              'Mix de castanhas e frutas secas'
+            ],
+            'Jantar': [
+              'Tilápia assada com brócolis no vapor',
+              'Sopa de lentilha com frango desfiado',
+              'Carne magra com purê de abóbora'
+            ]
+          }
+        },
+        elite: {
+          title: 'Plano Elite: Maestria Nutricional',
+          subtitle: 'Performance máxima e recuperação otimizada',
+          principles: [
+            'Ciclo completo de macros sincronizado com a periodização',
+            'Densidade nutricional em cada caloria',
+            'Suplementação estratégica com base em evidências',
+            'Controle hormonal através da nutrição'
+          ],
+          meals: {
+            'Refeição 1 (Jejum)': [
+              'Omelete 5 claras + 1 gema com espinafre, cúrcuma e abacate',
+              'Carne moída magra refogada com vegetais (pimentão, cebola, brócolis)',
+              'Ovos escalfados com aveia e café com leite'
+            ],
+            'Refeição 2 (Pré-Treino)': [
+              'Tilápia com batata doce e sal fino',
+              'Arroz branco com mel 30min antes do treino',
+              'Frango com mandioquinha e vegetais'
+            ],
+            'Pós-Treino Imediato': [
+              'Whey isolado com dextrose ou waxy maize',
+              'Banana com mel e whey protein em pó'
+            ],
+            'Refeição 4': [
+              'Peito de frango, arroz branco grande, salada imensa',
+              'Filé mignon com purê de aipim e aspargos'
+            ],
+            'Última Refeição': [
+              'Salmão com nozes, sementes de abóbora e azeite',
+              'Ovos mexidos com abacate e brócolis'
+            ]
+          }
+        }
+      };
+
+      function getMealPlanByProfile(profile) {
+        if (!profile || !profile.experience) return MEAL_PLANS.iniciante;
+        
+        const { experience, goal, frequency } = profile;
+        
+        // Lógica de recomendação
+        if (experience === 'iniciante' || frequency === '1-2') {
+          return MEAL_PLANS.iniciante;
+        }
+        if (experience === 'intermediario' || frequency === '3-4') {
+          return MEAL_PLANS.intermediario;
+        }
+        if (experience === 'avancado' || frequency === '5-6') {
+          return MEAL_PLANS.avancado;
+        }
+        if (experience === 'avancado' && frequency === 'diario') {
+          return MEAL_PLANS.elite;
+        }
+        
+        return MEAL_PLANS.intermediario;
+      }
+
+      function renderMealPlan() {
+        const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+        const mealPlan = getMealPlanByProfile(profile);
+        const container = document.getElementById('mealPlanContainer');
+        
+        if (!container) return;
+        
+        document.getElementById('mealPlanTitle').textContent = mealPlan.title;
+        document.getElementById('mealPlanSubtitle').textContent = mealPlan.subtitle;
+        
+        container.innerHTML = '';
+        
+        // Render meals
+        Object.entries(mealPlan.meals).forEach(([mealName, options]) => {
+          const mealCard = document.createElement('div');
+          mealCard.className = 'bg-gray-900/40 p-4 rounded-md border border-cyan-400/10 hover:border-cyan-400/30 transition cursor-pointer';
+          
+          let optionsHTML = options.map((opt, i) => `<li class="text-xs text-cyan-100/70 mb-1">• ${opt}</li>`).join('');
+          
+          mealCard.innerHTML = `
+            <h4 class="font-semibold text-cyan-100 mb-2">${mealName}</h4>
+            <ul class="text-xs space-y-1">
+              ${optionsHTML}
+            </ul>
+          `;
+          
+          container.appendChild(mealCard);
+        });
+        
+        // Render principles
+        if (mealPlan.principles && mealPlan.principles.length > 0) {
+          const principlesCard = document.createElement('div');
+          principlesCard.className = 'col-span-1 md:col-span-3 bg-cyan-900/10 p-4 rounded-md border border-cyan-400/20 mt-4';
+          let princsHTML = mealPlan.principles.map(p => `<li class="text-sm text-cyan-100/80 mb-2">✓ ${p}</li>`).join('');
+          principlesCard.innerHTML = `
+            <h4 class="font-semibold text-yellow-300 mb-3">Princípios do Plano</h4>
+            <ul class="space-y-2">
+              ${princsHTML}
+            </ul>
+          `;
+          container.appendChild(principlesCard);
+        }
+      }
+
+      function getRecommendedPlan() {
+        const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+        if (!profile.experience) return null;
+
+        // Logic: experience + goal + frequency => plan id
+        const { experience, goal, frequency } = profile;
+        if (experience === 'iniciante' || frequency === '1-2') return 'iniciante';
+        if (experience === 'intermediario' && (frequency === '3-4' || goal === 'ganhar-musculo')) return 'intermediario';
+        if (experience === 'avancado' || (frequency === '5-6' || frequency === 'diario')) return 'avancado';
+        return 'intermediario'; // fallback
+      }
+
+      function renderPlansPanel() {
+        const container = document.getElementById('plansContainer');
+        if (!container) return;
+        container.innerHTML = '';
+        const recommendedPlanId = getRecommendedPlan();
+        const userProfile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+
+        // Add profile banner if user has set profile
+        if (userProfile.name) {
+          const banner = document.createElement('div');
+          banner.className = 'col-span-1 md:col-span-2 bg-cyan-900/20 p-4 rounded-md border border-cyan-400/20 mb-2';
+          banner.innerHTML = `
+            <p class="text-cyan-100 text-sm"><strong>${userProfile.name}</strong> — Seu plano recomendado: <strong>${recommendedPlanId ? recommendedPlanId.charAt(0).toUpperCase() + recommendedPlanId.slice(1) : 'Perfil incompleto'}</strong></p>
+            <button class="neon-button text-xs py-1 px-2 mt-2" onclick="openProfileModal()">Atualizar Perfil</button>
+          `;
+          container.appendChild(banner);
+        } else {
+          const banner = document.createElement('div');
+          banner.className = 'col-span-1 md:col-span-2 bg-yellow-900/20 p-4 rounded-md border border-yellow-400/20 mb-2';
+          banner.innerHTML = `<p class="text-yellow-200 text-sm">Preencha seu perfil para receber uma recomendação personalizada.</p><button class="neon-button-yellow text-xs py-1 px-2 mt-2" onclick="openProfileModal()">Ir ao Perfil</button>`;
+          container.appendChild(banner);
+        }
+
+        PLANS.forEach(plan => {
+          const card = document.createElement('div');
+          card.className = 'p-4 rounded-md plan-card';
+          const isRecommended = plan.id === recommendedPlanId;
+          const benefitsHtml = plan.benefits.map(b => `<li class="text-sm">${b}</li>`).join('');
+          card.innerHTML = `
+            ${isRecommended ? '<div class="text-xs font-bold text-yellow-300 mb-2">★ RECOMENDADO PARA VOCÊ ★</div>' : ''}
+            <h4 class="font-semibold">${plan.title}</h4>
+            <p class="text-sm mb-2">${plan.subtitle}</p>
+            <ul class="mb-3">${benefitsHtml}</ul>
+            <div class="flex items-center justify-between">
+              <span class="price">${plan.price}</span>
+              <button class="plan-cta text-sm" onclick="selectPlan('${plan.id}')">Escolher</button>
+            </div>
+          `;
+
+          // Apply gradient based on plan id
+          if (plan.id === 'iniciante') card.classList.add('plan-gradient-iniciante');
+          else if (plan.id === 'intermediario') card.classList.add('plan-gradient-intermediario');
+          else if (plan.id === 'avancado') card.classList.add('plan-gradient-avancado');
+          else if (plan.id === 'elite') card.classList.add('plan-gradient-elite');
+          else card.classList.add('bg-gray-900/40');
+
+          // Highlight recommended plan
+          if (isRecommended) card.style.border = '2px solid rgba(250,204,21,0.6)';
+
+          container.appendChild(card);
+        });
+      }
+
+      function openPlansPanel() { const m = document.getElementById('plansPanelModal'); if (m) { renderPlansPanel(); m.classList.remove('hidden'); } }
+      function closePlansPanel() { const m = document.getElementById('plansPanelModal'); if (m) m.classList.add('hidden'); }
+      function selectPlan(planId) { alert('✓ Plano ' + planId + ' selecionado!'); closePlansPanel(); }
+
+      function openProfileModal() { const m = document.getElementById('profileModal'); if (m) { loadUserProfile(); m.classList.remove('hidden'); } }
+      function closeProfileModal() { const m = document.getElementById('profileModal'); if (m) m.classList.add('hidden'); }
+
+      function loadUserProfile() {
+        const profile = JSON.parse(localStorage.getItem('userProfile') || '{}');
+        if (profile.name) document.getElementById('userName').value = profile.name;
+        if (profile.experience) document.getElementById('userExperience').value = profile.experience;
+        if (profile.goal) document.getElementById('userGoal').value = profile.goal;
+        if (profile.frequency) document.getElementById('userFrequency').value = profile.frequency;
+      }
+
+      function saveUserProfile(e) {
+        e.preventDefault();
+        const name = document.getElementById("userName").value;
+        const experience = document.getElementById("userExperience").value;
+        const goal = document.getElementById("userGoal").value;
+        const frequency = document.getElementById("userFrequency").value;
+        if (!name || !experience || !goal || !frequency) { alert("Preencha todos os campos"); return; }
+        const profile = { name, experience, goal, frequency, savedAt: new Date().toISOString() };
+        localStorage.setItem("userProfile", JSON.stringify(profile));
+        renderMealPlan();
+        alert(`✓ Perfil de ${name} salvo com sucesso! Seu plano alimentar foi atualizado.`);
+        closeProfileModal();
+      }
+
+      function scrollToSection(id) { const el = document.getElementById(id); if(el) el.scrollIntoView({behavior:"smooth"}); }
+
+      function populateMealsAndInfo() {
+        const meals = JSON.parse(localStorage.getItem("meals") || "[]");
+        const mealsDiv = document.getElementById("mealsList");
+        if (mealsDiv) {
+          let ul = mealsDiv.querySelector("ul");
+          if (!ul) { ul = document.createElement("ul"); mealsDiv.innerHTML=""; mealsDiv.appendChild(ul); }
+          ul.innerHTML = "";
+          meals.slice(0,5).forEach(m => {
+            const li = document.createElement("li"); li.textContent = `- ${m.name}: ${m.description}`; ul.appendChild(li);
+          });
+          const lastMealLabel = document.getElementById("lastMealLabel");
+          if (lastMealLabel) {
+            if (meals.length > 0) lastMealLabel.textContent = `Última refeição: ${meals[0].name} — ${meals[0].description.substring(0,40)}${meals[0].description.length>40? "...":""}`;
+            else lastMealLabel.textContent = "Última refeição: —";
+          }
+        }
+        const weights = JSON.parse(localStorage.getItem("weights") || "[]");
+        const lastWeightLabel = document.getElementById("lastWeightLabel");
+        if (lastWeightLabel) {
+          if (weights && weights.length>0) {
+            const last = weights[weights.length-1];
+            lastWeightLabel.textContent = `Último peso: ${parseFloat(last.weight).toFixed(1)} kg`;
+          } else {
+            lastWeightLabel.textContent = "Último peso: -- kg";
+          }
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const currentUser = getCurrentUser();
+        if (currentUser) {
+          const dashboardHeader = document.querySelector("#dashboard h2");
+          if (dashboardHeader) dashboardHeader.textContent = `Olá, ${currentUser.name}!`;
+        }
+        // Incrementa contador de visualizações do site
+        try {
+          const v = parseInt(localStorage.getItem('site_views') || '0', 10) || 0;
+          localStorage.setItem('site_views', String(v + 1));
+        } catch (e) { console.warn('Não foi possível atualizar site_views:', e); }
+
+        // Renderiza status do widget de satisfação (opcional)
+        function renderSatisfactionInfo() {
+          try {
+            const arr = JSON.parse(localStorage.getItem('satisfaction') || '[]');
+            const info = document.getElementById('satisfactionInfo');
+            if (!info) return;
+            if (!arr || arr.length === 0) { info.innerHTML = 'Seja o primeiro a avaliar!'; return; }
+            const avg = (arr.reduce((a,b)=>a+b,0)/arr.length);
+            const avgFixed = avg.toFixed(2);
+            // Mostrar média numérica e visual com gemas coloridas (arredondar para inteiro para mostrar cor dominante)
+            const rounded = Math.round(avg);
+            let gemsHtml = '';
+            for (let i=1;i<=5;i++) {
+              const cls = i<=rounded ? `s-gem s-gem-${i} gem-inline` : 's-gem gem-inline dim';
+              gemsHtml += `<span class="${cls}" style="margin-right:6px">👍</span>`;
+            }
+            info.innerHTML = `${gemsHtml} <span class="text-xs" style="margin-left:6px">Média: ${avgFixed} (${arr.length} avaliações)</span>`;
+          } catch (e) { /* ignore */ }
+        }
+
+        window.submitSatisfaction = function(rating) {
+          try {
+            rating = parseInt(rating,10);
+            if (isNaN(rating) || rating < 1 || rating > 5) { alert('Avaliação inválida'); return; }
+            // Persistir avaliação global
+            const arr = JSON.parse(localStorage.getItem('satisfaction') || '[]');
+            arr.push(rating);
+            localStorage.setItem('satisfaction', JSON.stringify(arr));
+            renderSatisfactionInfo();
+            // Marcar avaliação do usuário atual (fixa até desfazer)
+            try {
+              const currentUserKey = (getCurrentUser && getCurrentUser()) ? ('user_rating_' + (getCurrentUser().email || getCurrentUser().id || 'guest')) : 'satisfaction_user_rating';
+              const existing = localStorage.getItem(currentUserKey);
+              if (existing && parseInt(existing,10) === rating) {
+                // toggle: se clicar de novo no mesmo, desfazer
+                localStorage.removeItem(currentUserKey);
+              } else {
+                localStorage.setItem(currentUserKey, String(rating));
+              }
+              applyUserRatingSelection();
+            } catch (e) { console.warn('Não foi possível persistir avaliação individual:', e); }
+            // Inicia rotação de mensagens do usuário (se estiver logado)
+            try {
+              const userMsgEl = document.getElementById('userMessageText');
+              if (userMsgEl && currentUser) {
+                // Use arrays MOTIVATIONAL and JOKES já definidos no arquivo
+                const pool = (typeof MOTIVATIONAL !== 'undefined' ? MOTIVATIONAL.concat((typeof JOKES !== 'undefined'? JOKES:[])) : (typeof JOKES !== 'undefined'? JOKES:[]));
+                if (pool && pool.length>0) rotateUserMessages('userMessageText', pool, 60000);
+              } else if (userMsgEl) {
+                // mostra uma mensagem padrão para não-logados
+                userMsgEl.textContent = 'Faça login para ver mensagens personalizadas.';
+              }
+            } catch(e) { console.warn('Erro ao iniciar mensagens do usuário', e); }
+            alert('Obrigado pela avaliação!');
+          } catch (e) { console.error(e); alert('Erro ao enviar avaliação'); }
+        }
+        renderSatisfactionInfo();
+        renderWeightChart(weightData);
+        renderMealPlan();
+        // Rotação de mensagens removida para 'mainQuote' e 'destaque' conforme solicitado
+        const navAuth = document.getElementById("navAuth"); if (navAuth) navAuth.addEventListener("click", () => scrollToSection("auth"));
+        const navDashboard = document.getElementById("navDashboard"); if (navDashboard) navDashboard.addEventListener("click", () => scrollToSection("dashboard"));
+        const navPlano = document.getElementById("navPlano"); if (navPlano) navPlano.addEventListener("click", () => scrollToSection("plano"));
+        const navPlansPanel = document.getElementById("navPlansPanel"); if (navPlansPanel) navPlansPanel.addEventListener("click", () => openPlansPanel());
+        populateMealsAndInfo();
+      
+      // Aplica seleção visual nas joias de avaliação com base em localStorage
+      function applyUserRatingSelection() {
+        try {
+          const currentUserObj = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
+          const key = currentUserObj ? ('user_rating_' + (currentUserObj.email || currentUserObj.id || 'guest')) : 'satisfaction_user_rating';
+          const val = localStorage.getItem(key);
+          const buttons = document.querySelectorAll('#satisfactionButtons .s-gem');
+          buttons.forEach((btn, idx) => {
+            const r = idx+1;
+            if (val && parseInt(val,10) === r) btn.classList.add('s-selected'); else btn.classList.remove('s-selected');
+          });
+        } catch (e) { console.warn('Erro ao aplicar seleção do usuário', e); }
+      }
+
+      // Inicializa seleção ao carregar
+      try { applyUserRatingSelection(); } catch(e) {}
+      });
+    </script>
+  </body>
+</html>
